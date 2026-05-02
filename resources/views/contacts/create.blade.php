@@ -2,6 +2,9 @@
     <x-slot name="title">Nuovo contatto</x-slot>
     <x-slot name="subtitle">Aggiungi un nuovo cliente al tuo SNS CRM</x-slot>
 
+    <!-- Toast Container (vanilla JS) -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2"></div>
+
     <div class="max-w-2xl mx-auto">
         <form id="createContactForm" enctype="multipart/form-data" class="rounded-3xl bg-white p-8 shadow-sm ring-1 ring-slate-200 space-y-6">
             <div>
@@ -91,6 +94,34 @@
     </div>
 
     <script>
+        // ========== VANILLA JS TOAST SYSTEM ==========
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+
+            const toast = document.createElement('div');
+            const bgColor = {
+                success: 'bg-green-600',
+                error: 'bg-red-600',
+                warning: 'bg-orange-500',
+                info: 'bg-blue-600'
+            }[type] || 'bg-blue-600';
+
+            toast.className = `flex items-center gap-2 px-4 py-3 rounded-lg text-white shadow-lg text-sm font-medium ${bgColor} transition-opacity duration-300`;
+            toast.innerHTML = `
+                <span>${message}</span>
+                <button class="ml-2 font-bold text-lg leading-none" onclick="this.parentElement.remove()">&times;</button>
+            `;
+
+            container.appendChild(toast);
+
+            // auto remove after 3.5 seconds
+            setTimeout(() => {
+                if (toast.parentNode) toast.remove();
+            }, 3500);
+        }
+
+        // ========== FORM SUBMISSION ==========
         document.getElementById('createContactForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -112,42 +143,54 @@
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Accept': 'application/json'
                 },
                 body: formData
             })
-            .then(response => {
-                console.log('Response status:', response.status);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
+            .then(async (response) => {
+                const contentType = response.headers.get('content-type');
+                // If response is JSON, parse it; otherwise treat as network error
+                if (contentType && contentType.includes('application/json')) {
+                    const data = await response.json();
+                    if (!response.ok) {
+                        // Validation or server error
+                        throw data;
+                    }
+                    return data;
+                } else {
+                    const text = await response.text();
+                    throw new Error('Risposta non valida dal server.');
                 }
-                return response.json();
             })
             .then(data => {
-                console.log('Response data:', data);
                 if (data.success) {
-                    alert(data.message);
-                    window.location.href = '/contacts';
+                    showToast(data.message || 'Contatto creato con successo!', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/contacts';
+                    }, 800);
                 } else {
-                    // Handle validation errors
-                    if (data.errors) {
-                        Object.keys(data.errors).forEach(field => {
-                            const errorEl = document.getElementById(field + '-error');
-                            if (errorEl) {
-                                errorEl.textContent = data.errors[field][0];
-                                errorEl.classList.remove('hidden');
-                            }
-                        });
-                    } else {
-                        alert('Errore durante la creazione del contatto');
-                    }
+                    showToast(data.message || 'Errore durante la creazione', 'error');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Errore di rete. Riprova.');
+                if (error.errors) {
+                    // Display field errors
+                    Object.keys(error.errors).forEach(field => {
+                        const errorEl = document.getElementById(field + '-error');
+                        if (errorEl) {
+                            errorEl.textContent = error.errors[field][0];
+                            errorEl.classList.remove('hidden');
+                        }
+                    });
+                    showToast('Correggi gli errori nel modulo', 'warning');
+                } else if (error.message) {
+                    showToast(error.message, 'error');
+                } else {
+                    showToast('Errore di rete. Riprova.', 'error');
+                }
             })
             .finally(() => {
-                // Hide loading
                 submitBtn.disabled = false;
                 loadingIcon.classList.add('hidden');
             });

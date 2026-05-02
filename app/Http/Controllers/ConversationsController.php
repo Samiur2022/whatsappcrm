@@ -9,32 +9,83 @@ use Illuminate\Http\Request;
 use Twilio\Rest\Client;
 use App\Events\MessageSent;
 use Illuminate\Support\Facades\Log;
+use App\Services\SettingsService;
 
 class ConversationsController extends Controller
 {
     protected $twilio;
+    protected $settings;
 
-   public function __construct()
-{
-    $this->twilio = new Client(config('services.twilio.sid'), config('services.twilio.token'));
-}
+    public function __construct(SettingsService $settings)
+    {
+        $this->settings = $settings;
+        $this->initializeTwilio();
+    }
+
+    /**
+     * Twilio Client 
+     */
+    protected function initializeTwilio(): void
+    {
+        $sid   = $this->settings->getTwilioSid();
+        $token = $this->settings->getTwilioToken();
+
+        if ($sid && $token) {
+            $this->twilio = new Client($sid, $token);
+        } else {
+            // Fallback to config/services.php
+            $this->twilio = new Client(config('services.twilio.sid'), config('services.twilio.token'));
+        }
+    }
+
+    /**
+     * 
+     */
+    protected function getFromNumber(): string
+    {
+        return $this->settings->getTwilioFrom() ?: config('services.twilio.from');
+    }
 
     public function index()
     {
-        $conversations = Conversation::with(['contact'])
-            ->orderBy('last_message_at', 'desc')
-            ->get();
+        $user = auth()->user();
+
+        if ($user->can('view all conversations')) {
+            $conversations = Conversation::with(['contact', 'assignedUser'])
+                ->orderBy('last_message_at', 'desc')
+                ->get();
+        } else {
+            $conversations = Conversation::with(['contact', 'assignedUser'])
+                ->where(function ($query) use ($user) {
+                    $query->where('assigned_user_id', $user->id)
+                          ->orWhereHas('messages', function ($q) use ($user) {
+                              $q->where('user_id', $user->id)
+                                ->where('direction', 'outbound');
+                          });
+                })
+                ->orderBy('last_message_at', 'desc')
+                ->get();
+        }
 
         return view('conversations.index', compact('conversations'));
     }
 
     public function show(Request $request, $id)
     {
-        $conversation = Conversation::with(['contact', 'messages.user'])->findOrFail($id);
+        $conversation = Conversation::with(['contact', 'messages.user', 'assignedUser'])->findOrFail($id);
 
         if ($request->ajax()) {
             return response()->json([
-                'conversation' => $conversation,
+                'conversation' => [
+                    'id' => $conversation->id,
+                    'contact' => $conversation->contact,
+                    'assigned_user' => $conversation->assignedUser ? [
+                        'id' => $conversation->assignedUser->id,
+                        'name' => $conversation->assignedUser->name,
+                    ] : null,
+                    'last_message' => $conversation->last_message,
+                    'unread_count' => $conversation->unread_count,
+                ],
                 'messages' => $conversation->messages->map(function ($msg) {
                     return [
                         'id' => $msg->id,
@@ -42,6 +93,7 @@ class ConversationsController extends Controller
                         'direction' => $msg->direction,
                         'status' => $msg->status,
                         'created_at' => $msg->created_at->format('H:i'),
+                        'user' => $msg->user->name ?? null,
                     ];
                 }),
             ]);
@@ -55,16 +107,23 @@ class ConversationsController extends Controller
         $request->validate(['body' => 'required|string']);
 
         $conversation = Conversation::findOrFail($conversationId);
+
+        $this->authorize('update', $conversation);
+
+        if (is_null($conversation->assigned_user_id)) {
+            $conversation->update(['assigned_user_id' => auth()->id()]);
+        }
+
         $contact = $conversation->contact;
 
         try {
             $twilioMessage = $this->twilio->messages->create(
-    "whatsapp:" . $contact->phone,
-    [
-        'from' => config('services.twilio.from'), // change 
-        'body' => $request->body,
-    ]
-);
+                "whatsapp:" . $contact->phone,
+                [
+                    'from' => $this->getFromNumber(),
+                    'body' => $request->body,
+                ]
+            );
 
             $msg = Message::create([
                 'conversation_id' => $conversationId,

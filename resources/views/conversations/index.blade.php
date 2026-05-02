@@ -2,7 +2,28 @@
     <x-slot name="title">Conversazioni</x-slot>
     <x-slot name="subtitle">Chat real-time WhatsApp</x-slot>
 
+    <!-- Toast Notification Container -->
     <div x-data="chatApp()" class="flex h-[calc(100vh-12rem)] gap-4">
+        <!-- Toast messages -->
+        <div class="fixed top-4 right-4 z-50 flex flex-col gap-2" id="toast-container">
+            <template x-for="toast in toasts" :key="toast.id">
+                <div
+                    x- transition
+                    class="flex items-center gap-2 px-4 py-3 rounded-lg text-white shadow-lg text-sm font-medium"
+                    :class="{
+                        'bg-green-600': toast.type === 'success',
+                        'bg-red-600': toast.type === 'error',
+                        'bg-orange-500': toast.type === 'warning',
+                        'bg-blue-600': toast.type === 'info'
+                    }"
+                    @click="removeToast(toast.id)"
+                >
+                    <span x-text="toast.message"></span>
+                    <button @click.stop="removeToast(toast.id)" class="ml-2 font-bold text-lg leading-none">&times;</button>
+                </div>
+            </template>
+        </div>
+
         <!-- Chat List (Left) -->
         <div class="w-80 rounded-3xl bg-white shadow-sm ring-1 ring-slate-200 overflow-hidden">
             <div class="p-4 border-b border-slate-200">
@@ -50,6 +71,11 @@
                         <div>
                             <h3 class="font-semibold text-slate-900" x-text="selectedChat?.contact?.name ? selectedChat.contact.name : 'Unknown'"></h3>
                             <p class="text-sm text-slate-500" x-text="selectedChat?.contact?.phone ? selectedChat.contact.phone : ''"></p>
+                            <!-- Assigned User -->
+                            <p class="text-xs text-slate-400">
+                                Assigned to:
+                                <span x-text="selectedChat?.assigned_user?.name || 'Unassigned'"></span>
+                            </p>
                         </div>
                         <div class="ml-auto">
                             <span class="inline-flex rounded-full px-2 py-1 text-xs font-medium bg-green-100 text-green-700">Online</span>
@@ -63,6 +89,7 @@
                                 <div class="max-w-xs lg:max-w-md px-4 py-2 rounded-2xl" :class="msg.direction === 'outbound' ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-900'">
                                     <p x-text="msg.body"></p>
                                     <p class="text-xs mt-1 opacity-70" x-text="formatTime(msg.created_at)"></p>
+                                    <p class="text-xs mt-0.5 opacity-60" x-text="msg.user ? 'By ' + msg.user : ''"></p>
                                 </div>
                             </div>
                         </template>
@@ -101,6 +128,20 @@
                 selectedChat: null,
                 newMessage: '',
                 search: '',
+                toasts: [],
+                toastId: 0,
+
+                // Toast methods
+                showToast(message, type = 'info') {
+                    const id = ++this.toastId;
+                    this.toasts.push({ id, message, type });
+                    // Auto remove after 3 seconds
+                    setTimeout(() => this.removeToast(id), 3000);
+                },
+
+                removeToast(id) {
+                    this.toasts = this.toasts.filter(t => t.id !== id);
+                },
 
                 selectChat(id) {
                     this.selectedChatId = id;
@@ -109,7 +150,12 @@
                         headers: { 'X-Requested-With': 'XMLHttpRequest' }
                     })
                     .then(async (res) => {
-                        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                        if (!res.ok) {
+                            if (res.status === 403) {
+                                throw new Error('Non hai il permesso di visualizzare questa conversazione.');
+                            }
+                            throw new Error(`HTTP ${res.status}`);
+                        }
                         return res.json();
                     })
                     .then((data) => {
@@ -122,7 +168,10 @@
                             if (el) el.scrollTop = el.scrollHeight;
                         });
                     })
-                    .catch((error) => console.error('Error:', error));
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        this.showToast(error.message, 'error');
+                    });
                 },
 
                 sendMessage() {
@@ -155,13 +204,14 @@
                                 const el = document.getElementById('messages');
                                 if (el) el.scrollTop = el.scrollHeight;
                             });
+                            this.showToast('Messaggio inviato!', 'success');
                         } else {
-                            alert("Errore nell'invio");
+                            this.showToast("Errore nell'invio", 'error');
                         }
                     })
                     .catch((error) => {
                         console.error('Error:', error);
-                        alert('Failed to send: ' + error.message);
+                        this.showToast('Failed to send: ' + error.message, 'error');
                     });
                 },
 
