@@ -49,6 +49,6 @@ return Application::configure(basePath: dirname(__DIR__))
         });
     })->create();
 
-// ইভেন্ট লিসেনার নিবন্ধন
+// Event 
 Event::listen(Login::class, LogUserLogin::class);
 Event::listen(Logout::class, LogUserLogout::class);
