@@ -6,8 +6,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\CampaignRoIController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\ReminderController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome')->name('home');
@@ -37,15 +39,21 @@ Route::middleware('auth')->group(function () {
         Route::post('/contacts/{id}/restore', [ContactsController::class, 'restore'])->name('contacts.restore');
     });
 
-    // Campaigns - manage campaigns (এখন সঠিক প্রিফিক্স সহ)
+    // Campaigns - manage campaigns
     Route::middleware('can:manage campaigns')->prefix('campaigns')->group(function () {
         Route::get('/', [CampaignController::class, 'index'])->name('campaigns.index');
         Route::post('/', [CampaignController::class, 'store'])->name('campaigns.store');
         Route::post('/import-excel', [CampaignController::class, 'importExcel'])->name('campaigns.import-excel');
         Route::get('/{campaign}/progress', [CampaignController::class, 'progress'])->name('campaigns.progress');
+        Route::get('/roi', [CampaignRoIController::class, 'index'])->name('campaigns.roi');
     });
 
-    // Settings - manage settings (ঠিক আছে, কোনো সমস্যা নেই)
+    // Reminders
+    Route::get('/reminders', [ReminderController::class, 'index'])->name('reminders.index');
+    Route::post('/reminders', [ReminderController::class, 'store'])->name('reminders.store');
+    Route::delete('/reminders/{reminder}', [ReminderController::class, 'destroy'])->name('reminders.destroy');
+
+    // Settings - manage settings
     Route::middleware('can:manage settings')->group(function () {
         Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
         Route::patch('/settings', [SettingsController::class, 'update'])->name('settings.update');

@@ -3,6 +3,26 @@
     <x-slot name="subtitle">Invia messaggi WhatsApp in blocco</x-slot>
 
     <div class="max-w-6xl mx-auto space-y-8" id="campaignApp">
+        <!-- ROI Button Section -->
+        <div class="flex justify-center">
+            <button id="roiButton" onclick="celebrateAndGo()"
+                class="relative inline-flex items-center justify-center px-10 py-5 overflow-hidden font-bold text-white bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 rounded-full group hover:scale-105 transform transition-all duration-300 shadow-2xl hover:shadow-3xl animate-pulse">
+                <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl"></span>
+                <span class="relative flex items-center gap-3 text-xl">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                    </svg>
+                    Visualizza ROI Campagne
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </span>
+            </button>
+        </div>
+
+        <!-- Canvas for Confetti -->
+        <canvas id="confettiCanvas" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9999; display:none;"></canvas>
+
         <!-- Excel Upload -->
         <div class="bg-white rounded-3xl p-6 shadow-sm ring-1 ring-slate-200">
             <h3 class="text-lg font-semibold mb-4">Importa contatti da Excel</h3>
@@ -55,7 +75,46 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
     <script>
+        function celebrateAndGo() {
+            // কনফেটি ইফেক্ট
+            const canvas = document.getElementById('confettiCanvas');
+            canvas.style.display = 'block';
+            
+            const duration = 2 * 1000; // 2 সেকেন্ড
+            const end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 8,
+                    angle: 60,
+                    spread: 80,
+                    origin: { x: 0, y: 0.7 },
+                    colors: ['#6366f1', '#ec4899', '#f43f5e', '#10b981', '#f59e0b'],
+                    shapes: ['circle', 'square', 'star'],
+                    scalar: 1.5
+                });
+                confetti({
+                    particleCount: 8,
+                    angle: 120,
+                    spread: 80,
+                    origin: { x: 1, y: 0.7 },
+                    colors: ['#6366f1', '#ec4899', '#f43f5e', '#10b981', '#f59e0b'],
+                    shapes: ['circle', 'square', 'star'],
+                    scalar: 1.5
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                } else {
+                    // কনফেটি শেষে ROI পেজে যাবে
+                    canvas.style.display = 'none';
+                    window.location.href = '/campaigns/roi';
+                }
+            }());
+        }
+
         // ফাইল আপলোড করা হলে
         document.getElementById('excelFileInput').addEventListener('change', async function(e) {
             const file = e.target.files[0];
@@ -150,4 +209,18 @@
             }
         });
     </script>
+
+    <style>
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+        #roiButton:hover {
+            animation: none;
+            box-shadow: 0 0 30px rgba(236, 72, 153, 0.6), 0 0 60px rgba(99, 102, 241, 0.4);
+        }
+    </style>
 </x-app-layout>
