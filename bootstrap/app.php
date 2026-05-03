@@ -30,7 +30,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Global web middleware append
         $middleware->web(append: [
-            \App\Http\Middleware\CheckCountry::class,
+            // \App\Http\Middleware\CheckCountry::class,  // ← Temporarily disabled
             \App\Http\Middleware\TrackUserActivity::class,
         ]);
     })
