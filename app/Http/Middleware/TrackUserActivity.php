@@ -11,26 +11,26 @@ class TrackUserActivity
 {
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check()) {
-            UserActivity::where('user_id', Auth::id())
-                ->whereNull('logged_out_at')
-                ->update(['last_activity_at' => now()]);
+        // if (Auth::check()) {
+        //     UserActivity::where('user_id', Auth::id())
+        //         ->whereNull('logged_out_at')
+        //         ->update(['last_activity_at' => now()]);
 
-            $lastActivity = session('last_activity_time') ?? now();
-            if (now()->diffInSeconds($lastActivity) > 300) {
-                Auth::guard('web')->logout();
+        //     $lastActivity = session('last_activity_time') ?? now();
+        //     if (now()->diffInSeconds($lastActivity) > 300) {
+        //         Auth::guard('web')->logout();
 
-                $request->session()->invalidate();
-                $request->session()->regenerateToken();
+        //         $request->session()->invalidate();
+        //         $request->session()->regenerateToken();
 
-                return redirect()->route('login')->with('toast', [
-                    'type' => 'warning',
-                    'message' => 'Sei stato disconnesso per inattività.',
-                ]);
-            }
+        //         return redirect()->route('login')->with('toast', [
+        //             'type' => 'warning',
+        //             'message' => 'Sei stato disconnesso per inattività.',
+        //         ]);
+        //     }
 
-            session(['last_activity_time' => now()]);
-        }
+        //     session(['last_activity_time' => now()]);
+        // }
 
         return $next($request);
     }
