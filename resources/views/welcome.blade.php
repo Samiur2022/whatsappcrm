@@ -3,28 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>SNS</title>
-  <!-- Tailwind CSS v3 + Font Awesome 6 (gratuito per icone) -->
+  <title>SNS Scopri tutti i bonus con un clic</title>
+  <!-- Tailwind CSS v3 + Font Awesome 6 -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <!-- Google Font: Inter + titoli morbidi -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
   <style>
-    /* reset e smooth scroll */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    html {
-      scroll-behavior: smooth;
-    }
-    body {
-      font-family: 'Inter', sans-serif;
-      overflow-x: hidden;
-      background-color: #fefefe;
-    }
-    /* preloader fullscreen */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: #fefefe; }
+    /* Preloader fullscreen con testo BonusX */
     #preloader {
       position: fixed;
       top: 0;
@@ -41,11 +29,8 @@
       visibility: visible;
       opacity: 1;
     }
-    #preloader.hide-preloader {
-      opacity: 0;
-      visibility: hidden;
-    }
-    .preloader-sns {
+    #preloader.hide-preloader { opacity: 0; visibility: hidden; }
+    .preloader-text {
       font-size: 3.2rem;
       font-weight: 800;
       letter-spacing: 10px;
@@ -61,95 +46,77 @@
       50% { opacity: 1; letter-spacing: 14px; filter: blur(0.5px); text-shadow: 0 0 10px #2dd4bf;}
       100% { opacity: 0.6; letter-spacing: 8px; filter: blur(0px);}
     }
-    /* parallax layer utils (immagini di sfondo con parallax) */
+    /* Parallax */
     .parallax-bg {
       background-attachment: fixed;
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
     }
-    /* mobile fallback (attacco fisso su mobile a volte buggato, ma rimane gradevole) */
-    @media (max-width: 768px) {
-      .parallax-bg {
-        background-attachment: scroll;
-      }
-    }
-    /* transizioni navbar mobile */
+    @media (max-width: 768px) { .parallax-bg { background-attachment: scroll; } }
     .mobile-menu {
       transition: transform 0.3s ease-in-out, opacity 0.3s;
       transform: translateX(100%);
       opacity: 0;
     }
-    .mobile-menu.open {
-      transform: translateX(0);
-      opacity: 1;
-    }
-    /* utility per ombre morbide */
-    .card-hover {
-      transition: all 0.25s ease;
-    }
-    .card-hover:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 25px 35px -12px rgba(0, 0, 0, 0.15);
-    }
-    /* bg pattern sottile */
-    .bg-dot-pattern {
-      background-image: radial-gradient(#cbd5e1 0.8px, transparent 0.8px);
-      background-size: 20px 20px;
-    }
+    .mobile-menu.open { transform: translateX(0); opacity: 1; }
+    .card-hover { transition: all 0.25s ease; }
+    .card-hover:hover { transform: translateY(-6px); box-shadow: 0 25px 35px -12px rgba(0, 0, 0, 0.15); }
+    button, a[role="button"], .whatsapp-trigger { cursor: pointer; }
   </style>
 </head>
 <body class="antialiased">
 
-  <!-- PRELOADER 'sns' -->
+  <!-- PRELOADER con BONUSX al posto di SNS -->
   <div id="preloader">
-    <div class="preloader-sns">sns</div>
+    <div class="preloader-text">BonusX</div>
   </div>
 
-  <!-- HEADER + NAVBAR (RESPONSIVE con hamburger) -->
+  <!-- HEADER + NAVBAR RESPONSIVE -->
   <header class="fixed top-0 left-0 w-full bg-white/95 backdrop-blur-md shadow-md z-50 border-b border-gray-200/50">
     <div class="max-w-7xl mx-auto px-5 md:px-8">
       <div class="flex justify-between items-center py-4 md:py-5">
-        <!-- logo / brand -->
-        <div class="flex items-center gap-1">
+        <!-- logo / brand (non whatsapp) -->
+        <div class="flex items-center gap-1" data-no-wa="true">
           <i class="fas fa-shield-alt text-2xl text-indigo-600"></i>
-          <span class="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-700 to-cyan-600 bg-clip-text text-transparent">SNS</span>
+          <span class="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-700 to-cyan-600 bg-clip-text text-transparent">BonusX</span>
         </div>
-        <!-- Desktop menu -->
+        <!-- Desktop menu (con data-no-wa per non aprire whatsapp) -->
         <nav class="hidden md:flex space-x-8 font-medium text-gray-700">
-          <a href="#hero" class="hover:text-indigo-600 transition">Home</a>
-          <a href="#servizi" class="hover:text-indigo-600 transition">Servizi</a>
-          <a href="#funziona" class="hover:text-indigo-600 transition">Come funziona</a>
-          <a href="#numeri" class="hover:text-indigo-600 transition">Impatto</a>
-          <a href="#testimonianze" class="hover:text-indigo-600 transition">Testimonianze</a>
-          <a href="#contatto" class="hover:text-indigo-600 transition">Contatti</a>
+          <a href="#hero" data-no-wa="true" class="hover:text-indigo-600 transition">Home</a>
+          <a href="#servizi" data-no-wa="true" class="hover:text-indigo-600 transition">Servizi</a>
+          <a href="#funziona" data-no-wa="true" class="hover:text-indigo-600 transition">Come funziona</a>
+          <a href="#numeri" data-no-wa="true" class="hover:text-indigo-600 transition">Impatto</a>
+          <a href="#testimonianze" data-no-wa="true" class="hover:text-indigo-600 transition">Testimonianze</a>
+          <a href="#contatto" data-no-wa="true" class="hover:text-indigo-600 transition">Contatti</a>
         </nav>
-        <!-- Bottone CTA desktop -->
+        <!-- Bottone CTA desktop -> apri WhatsApp -->
         <div class="hidden md:block">
-          <a href="#" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2 rounded-full transition shadow-md shadow-indigo-200">Inizia ora →</a>
+          <a href="#" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2 rounded-full transition shadow-md shadow-indigo-200 whatsapp-btn">Inizia ora →</a>
         </div>
-        <!-- Mobile hamburger -->
-        <button id="menuBtn" class="block md:hidden text-gray-800 text-2xl focus:outline-none">
+        <!-- Hamburger (non whatsapp) -->
+        <button id="menuBtn" class="block md:hidden text-gray-800 text-2xl focus:outline-none" data-no-wa="true">
           <i class="fas fa-bars"></i>
         </button>
       </div>
     </div>
-    <!-- Mobile Menu (full-width overlay) -->
+    <!-- Mobile Menu overlay (solo voci di navigazione hanno data-no-wa, il grosso pulsante Inizia invece è whatsapp) -->
     <div id="mobileMenu" class="mobile-menu fixed top-0 right-0 w-full h-screen bg-white/95 backdrop-blur-xl z-40 flex flex-col items-center justify-center gap-8 text-xl font-semibold shadow-2xl md:hidden">
-      <button id="closeMenuBtn" class="absolute top-6 right-6 text-3xl text-gray-700"><i class="fas fa-times"></i></button>
-      <a href="#hero" class="hover:text-indigo-600 transition">Home</a>
-      <a href="#servizi" class="hover:text-indigo-600 transition">Servizi</a>
-      <a href="#funziona" class="hover:text-indigo-600 transition">Come funziona</a>
-      <a href="#numeri" class="hover:text-indigo-600 transition">Impatto</a>
-      <a href="#testimonianze" class="hover:text-indigo-600 transition">Testimonianze</a>
-      <a href="#contatto" class="hover:text-indigo-600 transition">Contatti</a>
-      <a href="#" class="bg-indigo-600 text-white px-8 py-3 rounded-full w-48 text-center shadow-lg">Inizia ora</a>
+      <button id="closeMenuBtn" class="absolute top-6 right-6 text-3xl text-gray-700" data-no-wa="true"><i class="fas fa-times"></i></button>
+      <a href="#hero" data-no-wa="true" class="hover:text-indigo-600 transition">Home</a>
+      <a href="#servizi" data-no-wa="true" class="hover:text-indigo-600 transition">Servizi</a>
+      <a href="#funziona" data-no-wa="true" class="hover:text-indigo-600 transition">Come funziona</a>
+      <a href="#numeri" data-no-wa="true" class="hover:text-indigo-600 transition">Impatto</a>
+      <a href="#testimonianze" data-no-wa="true" class="hover:text-indigo-600 transition">Testimonianze</a>
+      <a href="#contatto" data-no-wa="true" class="hover:text-indigo-600 transition">Contatti</a>
+      <!-- Questo pulsante INVIA a WhatsApp -->
+      <a href="#" class="bg-indigo-600 text-white px-8 py-3 rounded-full w-48 text-center shadow-lg whatsapp-btn">Inizia ora</a>
     </div>
   </header>
 
-  <main class="pt-20"> <!-- offset per navbar fissa -->
+  <main class="pt-20">
 
-    <!-- SEZIONE 1: HERO con parallax (background fisso) -->
+    <!-- SEZIONE 1: HERO con parallax -->
     <section id="hero" class="relative parallax-bg" style="background-image: linear-gradient(117deg, rgba(2,0,36,0.82) 0%, rgba(15,25,55,0.85) 100%), url('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'); background-attachment: fixed;">
       <div class="max-w-7xl mx-auto px-5 py-24 md:py-32 text-white">
         <div class="md:w-2/3 space-y-6">
@@ -157,8 +124,8 @@
           <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">Il tuo alleato che <span class="text-cyan-300">semplifica la burocrazia</span></h1>
           <p class="text-lg md:text-xl text-gray-200 max-w-2xl">Troviamo bonus che non sapevi di poter avere, ottimizziamo le tasse, gestiamo le pratiche difficili. Tu vivi, noi facciamo il resto.</p>
           <div class="flex flex-wrap gap-4 pt-4">
-            <a href="#" class="bg-white text-indigo-800 font-bold px-7 py-3 rounded-full shadow-xl hover:shadow-2xl transition hover:scale-105">Scopri i tuoi bonus →</a>
-            <a href="#" class="border border-white/40 hover:bg-white/10 px-7 py-3 rounded-full transition">Guarda il video <i class="fa-regular fa-circle-play ml-1"></i></a>
+            <a href="#" class="bg-white text-indigo-800 font-bold px-7 py-3 rounded-full shadow-xl hover:shadow-2xl transition hover:scale-105 whatsapp-btn">Scopri i tuoi bonus →</a>
+            <a href="#" class="border border-white/40 hover:bg-white/10 px-7 py-3 rounded-full transition whatsapp-btn">Guarda il video <i class="fa-regular fa-circle-play ml-1"></i></a>
           </div>
           <div class="flex flex-wrap gap-5 text-sm text-gray-200 pt-6">
             <span><i class="fa-regular fa-clock mr-1"></i> Nessuna coda</span>
@@ -169,7 +136,7 @@
       </div>
     </section>
 
-    <!-- SEZIONE 2: SERVIZI CHIAVE (card con effetto hover, grid responsiva) -->
+    <!-- SEZIONE 2: SERVIZI (tutti i link/btn vanno su WhatsApp) -->
     <section id="servizi" class="py-20 px-5 bg-white">
       <div class="max-w-7xl mx-auto">
         <div class="text-center max-w-2xl mx-auto mb-14">
@@ -182,43 +149,43 @@
             <div class="h-12 w-12 rounded-xl bg-indigo-100 flex items-center justify-center mb-5"><i class="fas fa-file-invoice-dollar text-2xl text-indigo-700"></i></div>
             <h3 class="text-xl font-bold text-gray-800">ISEE & Dichiarazione</h3>
             <p class="text-gray-500 mt-2">Calcolo ISEE in 24 ore, Modello 730 precompilato e detrazioni massimizzate senza errori.</p>
-            <a href="#" class="inline-flex items-center mt-4 text-indigo-600 font-medium">Richiedi ora <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
+            <a href="#" class="inline-flex items-center mt-4 text-indigo-600 font-medium whatsapp-btn">Richiedi ora <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
           </div>
           <div class="bg-gray-50 rounded-2xl p-6 card-hover border border-gray-100 shadow-sm">
             <div class="h-12 w-12 rounded-xl bg-emerald-100 flex items-center justify-center mb-5"><i class="fas fa-briefcase text-2xl text-emerald-700"></i></div>
             <h3 class="text-xl font-bold text-gray-800">NASpI / Disoccupazione</h3>
             <p class="text-gray-500 mt-2">Ottenere la disoccupazione rapidamente, supporto completo per la domanda INPS.</p>
-            <a href="#" class="inline-flex items-center mt-4 text-indigo-600 font-medium">Scopri di più <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
+            <a href="#" class="inline-flex items-center mt-4 text-indigo-600 font-medium whatsapp-btn">Scopri di più <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
           </div>
           <div class="bg-gray-50 rounded-2xl p-6 card-hover border border-gray-100 shadow-sm">
             <div class="h-12 w-12 rounded-xl bg-amber-100 flex items-center justify-center mb-5"><i class="fas fa-baby-carriage text-2xl text-amber-700"></i></div>
             <h3 class="text-xl font-bold text-gray-800">Assegno Unico & Famiglia</h3>
             <p class="text-gray-500 mt-2">Gestiamo la domanda per ottenere il massimo importo mensile e bonus natalità.</p>
-            <a href="#" class="inline-flex items-center mt-4 text-indigo-600 font-medium">Attiva ora <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
+            <a href="#" class="inline-flex items-center mt-4 text-indigo-600 font-medium whatsapp-btn">Attiva ora <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
           </div>
           <div class="bg-gray-50 rounded-2xl p-6 card-hover border border-gray-100 shadow-sm">
             <div class="h-12 w-12 rounded-xl bg-sky-100 flex items-center justify-center mb-5"><i class="fas fa-home text-2xl text-sky-700"></i></div>
             <h3 class="text-xl font-bold text-gray-800">Bonus Casa & Ristrutturazioni</h3>
             <p class="text-gray-500 mt-2">Ecobonus, bonus ristrutturazioni e Superbonus: verifica la tua idoneità.</p>
-            <a href="#" class="inline-flex items-center mt-4 text-indigo-600 font-medium">Richiedi consulenza <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
+            <a href="#" class="inline-flex items-center mt-4 text-indigo-600 font-medium whatsapp-btn">Richiedi consulenza <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
           </div>
           <div class="bg-gray-50 rounded-2xl p-6 card-hover border border-gray-100 shadow-sm">
             <div class="h-12 w-12 rounded-xl bg-rose-100 flex items-center justify-center mb-5"><i class="fas fa-graduation-cap text-2xl text-rose-700"></i></div>
             <h3 class="text-xl font-bold text-gray-800">Borse di studio & Università</h3>
             <p class="text-gray-500 mt-2">Opportunità regionali e nazionali per diritto allo studio, tasse agevolate.</p>
-            <a href="#" class="inline-flex items-center mt-4 text-indigo-600 font-medium">Cerca borse <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
+            <a href="#" class="inline-flex items-center mt-4 text-indigo-600 font-medium whatsapp-btn">Cerca borse <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
           </div>
           <div class="bg-gray-50 rounded-2xl p-6 card-hover border border-gray-100 shadow-sm">
             <div class="h-12 w-12 rounded-xl bg-purple-100 flex items-center justify-center mb-5"><i class="fas fa-chalkboard-user text-2xl text-purple-700"></i></div>
             <h3 class="text-xl font-bold text-gray-800">Consulenza Premium</h3>
             <p class="text-gray-500 mt-2">Supporto telefonico con commercialisti e caf per casi complessi personalizzati.</p>
-            <a href="#" class="inline-flex items-center mt-4 text-indigo-600 font-medium">Prenota ora <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
+            <a href="#" class="inline-flex items-center mt-4 text-indigo-600 font-medium whatsapp-btn">Prenota ora <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SEZIONE 3: COME FUNZIONA (split layout + parallax subtly) -->
+    <!-- SEZIONE 3: COME FUNZIONA -->
     <section id="funziona" class="py-20 px-5 bg-gradient-to-br from-indigo-50 via-white to-sky-50">
       <div class="max-w-7xl mx-auto">
         <div class="text-center mb-12">
@@ -243,12 +210,12 @@
           </div>
         </div>
         <div class="text-center mt-12">
-          <a href="#" class="inline-block bg-indigo-700 hover:bg-indigo-800 text-white px-8 py-3 rounded-xl font-semibold shadow-lg transition">Inizia subito – è gratuito</a>
+          <a href="#" class="inline-block bg-indigo-700 hover:bg-indigo-800 text-white px-8 py-3 rounded-xl font-semibold shadow-lg transition whatsapp-btn">Inizia subito – è gratuito</a>
         </div>
       </div>
     </section>
 
-    <!-- SEZIONE 4: NUMERI E IMPATTO (statistiche con parallax bg) -->
+    <!-- SEZIONE 4: NUMERI E IMPATTO (parallax) -->
     <section id="numeri" class="parallax-bg py-20 px-5" style="background-image: linear-gradient(135deg, #0b1c3a 0%, #0a1630 100%), url('https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=2069&auto=format'); background-attachment: fixed; background-blend-mode: overlay;">
       <div class="max-w-7xl mx-auto text-white">
         <div class="text-center mb-12">
@@ -281,7 +248,7 @@
       </div>
     </section>
 
-    <!-- SEZIONE 5: TESTIMONIANZE (carousel minimale ma elegante, card doppie responsive) -->
+    <!-- SEZIONE 5: TESTIMONIANZE -->
     <section id="testimonianze" class="py-20 px-5 bg-white">
       <div class="max-w-7xl mx-auto">
         <div class="text-center mb-12">
@@ -326,7 +293,7 @@
       </div>
     </section>
 
-    <!-- SEZIONE 6: CONTATTI / NEWSLETTER (footer e call to action finale) -->
+    <!-- SEZIONE 6: CONTATTI / NEWSLETTER (il bottone iscriviti porta su WhatsApp) -->
     <section id="contatto" class="relative bg-indigo-900 text-white py-20 px-5 overflow-hidden">
       <div class="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070')] bg-cover bg-center"></div>
       <div class="relative max-w-5xl mx-auto text-center z-10">
@@ -334,14 +301,14 @@
         <p class="text-indigo-100 text-lg mt-4 max-w-2xl mx-auto">Iscriviti alla newsletter e ricevi aggiornamenti su nuovi bonus, scadenze e consigli fiscali.</p>
         <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center max-w-lg mx-auto">
           <input type="email" placeholder="La tua email" class="px-6 py-3 rounded-full text-gray-800 w-full focus:outline-none">
-          <button class="bg-cyan-400 hover:bg-cyan-500 text-gray-900 font-bold px-7 py-3 rounded-full transition shadow-lg">Iscriviti gratis</button>
+          <button class="bg-cyan-400 hover:bg-cyan-500 text-gray-900 font-bold px-7 py-3 rounded-full transition shadow-lg whatsapp-btn">Iscriviti gratis</button>
         </div>
         <div class="mt-12 flex flex-wrap justify-center gap-6 text-sm text-indigo-200">
-          <a href="#" class="hover:text-white transition"><i class="fab fa-facebook-f mr-1"></i> Facebook</a>
-          <a href="#" class="hover:text-white transition"><i class="fab fa-instagram mr-1"></i> Instagram</a>
-          <a href="#" class="hover:text-white transition"><i class="fab fa-linkedin-in mr-1"></i> LinkedIn</a>
-          <a href="#" class="hover:text-white transition">info@bonusx.it</a>
-          <a href="#" class="hover:text-white transition">Privacy & Cookie</a>
+          <a href="#" data-no-wa="true" class="hover:text-white transition"><i class="fab fa-facebook-f mr-1"></i> Facebook</a>
+          <a href="#" data-no-wa="true" class="hover:text-white transition"><i class="fab fa-instagram mr-1"></i> Instagram</a>
+          <a href="#" data-no-wa="true" class="hover:text-white transition"><i class="fab fa-linkedin-in mr-1"></i> LinkedIn</a>
+          <a href="#" data-no-wa="true" class="hover:text-white transition">info@bonusx.it</a>
+          <a href="#" data-no-wa="true" class="hover:text-white transition">Privacy & Cookie</a>
         </div>
         <div class="mt-8 text-indigo-200 text-xs">© 2025 BonusX · semplifichiamo la burocrazia italiana. P.IVA 11237050965</div>
       </div>
@@ -350,38 +317,69 @@
   </main>
 
   <script>
-    // preloader auto-hide after page load
-    window.addEventListener('load', function() {
-      const preloader = document.getElementById('preloader');
-      if(preloader) {
-        setTimeout(() => {
-          preloader.classList.add('hide-preloader');
-        }, 400);
-      }
-    });
-    // Mobile menu toggles
-    const menuBtn = document.getElementById('menuBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-    const closeMenuBtn = document.getElementById('closeMenuBtn');
+    (function() {
+      // Preloader Hide
+      window.addEventListener('load', function() {
+        const preloader = document.getElementById('preloader');
+        if(preloader) {
+          setTimeout(() => preloader.classList.add('hide-preloader'), 400);
+        }
+      });
 
-    function openMobileMenu() {
-      mobileMenu.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeMobileMenu() {
-      mobileMenu.classList.remove('open');
-      document.body.style.overflow = '';
-    }
-    if(menuBtn) menuBtn.addEventListener('click', openMobileMenu);
-    if(closeMenuBtn) closeMenuBtn.addEventListener('click', closeMobileMenu);
-    // Chiudi menu mobile cliccando sui link interni
-    const mobileLinks = mobileMenu.querySelectorAll('a');
-    mobileLinks.forEach(link => {
-      link.addEventListener('click', closeMobileMenu);
-    });
-    // Parallax fine-tuning: gestione smooth per il fixed in mobile? già presente nei media query, ma manteniamo consistenza.
-    // Aggiunta classe per migliorare parllax sulle immagini.
-    console.log('Landing BonusX attiva — full responsive, preloader sns');
+      // Mobile menu toggle
+      const menuBtn = document.getElementById('menuBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      const closeMenuBtn = document.getElementById('closeMenuBtn');
+      function openMobileMenu() { mobileMenu.classList.add('open'); document.body.style.overflow = 'hidden'; }
+      function closeMobileMenu() { mobileMenu.classList.remove('open'); document.body.style.overflow = ''; }
+      if(menuBtn) menuBtn.addEventListener('click', openMobileMenu);
+      if(closeMenuBtn) closeMenuBtn.addEventListener('click', closeMobileMenu);
+      const mobileLinks = mobileMenu ? mobileMenu.querySelectorAll('a:not([data-no-wa])') : [];
+      mobileLinks.forEach(link => link.addEventListener('click', closeMobileMenu));
+      const allNavLinks = document.querySelectorAll('[data-no-wa="true"]');
+      allNavLinks.forEach(link => link.addEventListener('click', (e) => { /* allow normal scroll */ }));
+
+      // WHATSAPP INTEGRATION: numero +39 353 204 4997
+      const WHATSAPP_NUMBER = "393532044997";
+      const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=Ciao%20BonusX%2C%20vorrei%20ricevere%20maggiori%20informazioni%20sui%20bonus%20disponibili.`;
+
+      function openWhatsApp(event, targetElement) {
+        // Se l'elemento o un suo genitore ha data-no-wa, non fare nulla
+        let el = targetElement;
+        while(el && el !== document.body) {
+          if(el.hasAttribute && el.hasAttribute('data-no-wa')) return false;
+          el = el.parentElement;
+        }
+        event.preventDefault();
+        window.open(WHATSAPP_URL, '_blank');
+        return false;
+      }
+
+      // Gestione globale: tutti i link e bottoni che hanno classe 'whatsapp-btn' oppure qualsiasi pulsante/ancora senza data-no-wa
+      document.body.addEventListener('click', function(e) {
+        let target = e.target.closest('a, button');
+        if(!target) return;
+        // Se ha data-no-wa direttamente o ereditato -> skip
+        let checkNoWA = target.closest('[data-no-wa]');
+        if(checkNoWA) return;
+        // Se è un bottone o un link (anche senza classe) lo blocchiamo e mandiamo su WA
+        // Ma evitiamo di intercettare link di navigazione interna che hanno href="#..." senza classe whatsapp? 
+        // In ogni caso, se è un link che inizia con # ma non ha classe whatsapp-btn potrebbe essere menu (ma hanno già data-no-wa)
+        // Per sicurezza escludiamo solo se href inizia con # e non ha la classe whatsapp-btn (per evitare conflitti con ancora scroll residue)
+        // Nel nostro codice tutti i link che devono rimanere per scroll hanno data-no-wa, quindi questa condizione ulteriore è ridondante ma utile.
+        if(target.tagName === 'A' && target.getAttribute('href') && target.getAttribute('href').startsWith('#') && !target.classList.contains('whatsapp-btn')) {
+          // Se è ancora di navigazione senza data-no-wa (non dovrebbe accadere) non interferiamo
+          return;
+        }
+        // per i bottoni o link CTA, inviamo a WhatsApp
+        e.preventDefault();
+        window.open(WHATSAPP_URL, '_blank');
+      });
+      
+      // Assicuriamoci che anche i bottoni dinamici o gli elementi con classe .whatsapp-btn vengano catturati dall'evento sopra,
+      // ma aggiungiamo anche un piccolo fix per elementi che potrebbero avere href definito e prevenire doppio open.
+      console.log("BonusX landing pronta — tutti i pulsanti reindirizzano a WhatsApp +393532044997");
+    })();
   </script>
 </body>
 </html>
