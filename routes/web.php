@@ -25,7 +25,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     });
 
-    // Conversations - view conversations permission দরকার
+    // Conversations - view conversations permission 
     Route::middleware('can:view conversations')->group(function () {
         Route::get('/conversations', [ConversationsController::class, 'index'])->name('conversations.index');
         Route::get('/conversations/{conversation}', [ConversationsController::class, 'show'])->name('conversations.show');
