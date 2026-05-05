@@ -1,135 +1,387 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>WhatsApp CRM · Messaggi intelligenti</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-        
-        * { font-family: 'Inter', sans-serif; }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-12px); }
-        }
-        
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.2); }
-            50% { box-shadow: 0 0 20px 5px rgba(16, 185, 129, 0.1); }
-        }
-        
-        .animate-float { animation: float 5s ease-in-out infinite; }
-        .animate-glow { animation: pulse-glow 3s ease-in-out infinite; }
-        
-        .text-shadow-soft { text-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>SNS</title>
+  <!-- Tailwind CSS v3 + Font Awesome 6 (gratuito per icone) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Google Font: Inter + titoli morbidi -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <style>
+    /* reset e smooth scroll */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      background-color: #fefefe;
+    }
+    /* preloader fullscreen */
+    #preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(145deg, #0b1120 0%, #111827 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      transition: opacity 0.8s cubic-bezier(0.23, 1, 0.32, 1), visibility 0.8s;
+      pointer-events: none;
+      visibility: visible;
+      opacity: 1;
+    }
+    #preloader.hide-preloader {
+      opacity: 0;
+      visibility: hidden;
+    }
+    .preloader-sns {
+      font-size: 3.2rem;
+      font-weight: 800;
+      letter-spacing: 10px;
+      background: linear-gradient(135deg, #FFFFFF 20%, #A5F3FC 80%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-transform: uppercase;
+      animation: pulseGlow 1.6s ease-in-out infinite;
+    }
+    @keyframes pulseGlow {
+      0% { opacity: 0.6; letter-spacing: 8px; filter: blur(0px);}
+      50% { opacity: 1; letter-spacing: 14px; filter: blur(0.5px); text-shadow: 0 0 10px #2dd4bf;}
+      100% { opacity: 0.6; letter-spacing: 8px; filter: blur(0px);}
+    }
+    /* parallax layer utils (immagini di sfondo con parallax) */
+    .parallax-bg {
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    /* mobile fallback (attacco fisso su mobile a volte buggato, ma rimane gradevole) */
+    @media (max-width: 768px) {
+      .parallax-bg {
+        background-attachment: scroll;
+      }
+    }
+    /* transizioni navbar mobile */
+    .mobile-menu {
+      transition: transform 0.3s ease-in-out, opacity 0.3s;
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    .mobile-menu.open {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    /* utility per ombre morbide */
+    .card-hover {
+      transition: all 0.25s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 25px 35px -12px rgba(0, 0, 0, 0.15);
+    }
+    /* bg pattern sottile */
+    .bg-dot-pattern {
+      background-image: radial-gradient(#cbd5e1 0.8px, transparent 0.8px);
+      background-size: 20px 20px;
+    }
+  </style>
 </head>
-<body class="bg-gradient-to-br from-slate-50 via-white to-emerald-50 text-slate-800 antialiased min-h-screen flex items-center justify-center p-4 md:p-6">
+<body class="antialiased">
 
-    <!-- CONTENITORE PRINCIPALE CENTRATO -->
-    <div class="w-full max-w-5xl mx-auto text-center">
-        
-        <!-- LOGO / ICONA ANIMATA -->
-        <div class="flex justify-center mb-8">
-            <div class="animate-float bg-gradient-to-br from-emerald-500 to-green-600 w-24 h-24 md:w-28 md:h-28 rounded-3xl flex items-center justify-center shadow-2xl shadow-emerald-200/50 animate-glow">
-                <svg class="w-14 h-14 md:w-16 md:h-16 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12.031 2.016c-5.515 0-9.984 4.468-9.984 9.984 0 1.769.461 3.493 1.338 4.992L2.015 22.5l5.742-1.508a9.946 9.946 0 0 0 4.274 1.008c5.515 0 9.984-4.468 9.984-9.984 0-5.515-4.468-9.984-9.984-9.984z"/>
-                </svg>
-            </div>
+  <!-- PRELOADER 'sns' -->
+  <div id="preloader">
+    <div class="preloader-sns">sns</div>
+  </div>
+
+  <!-- HEADER + NAVBAR (RESPONSIVE con hamburger) -->
+  <header class="fixed top-0 left-0 w-full bg-white/95 backdrop-blur-md shadow-md z-50 border-b border-gray-200/50">
+    <div class="max-w-7xl mx-auto px-5 md:px-8">
+      <div class="flex justify-between items-center py-4 md:py-5">
+        <!-- logo / brand -->
+        <div class="flex items-center gap-1">
+          <i class="fas fa-shield-alt text-2xl text-indigo-600"></i>
+          <span class="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-700 to-cyan-600 bg-clip-text text-transparent">SNS</span>
         </div>
-        
-        <!-- TITOLO PRINCIPALE GRANDE E ANIMATO -->
-        <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-6 tracking-tight leading-tight">
-            <span class="bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent">
-                Gestisci WhatsApp
-            </span>
-            <br>
-            <span class="bg-gradient-to-r from-emerald-600 to-green-500 bg-clip-text text-transparent">
-                con semplicità
-            </span>
-        </h1>
-        
-        <!-- SOTTOTITOLO -->
-        <p class="text-lg md:text-2xl text-slate-600 max-w-3xl mx-auto mb-12 leading-relaxed">
-            Il CRM pensato per chi comunica con i clienti via WhatsApp. 
-            <span class="font-medium text-slate-700">Veloce, intuitivo, sempre con te.</span>
-        </p>
-        
-        <!-- PULSANTI PRINCIPALI -->
-        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-            <a href="#" class="group w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-10 py-5 rounded-2xl shadow-lg shadow-emerald-200 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl text-lg">
-                <svg class="w-5 h-5 transition-transform group-hover:scale-110" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                </svg>
-                Inizia gratuitamente
-            </a>
-            <a href="#" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white border-2 border-slate-200 hover:border-emerald-300 text-slate-700 font-medium px-8 py-5 rounded-2xl shadow-sm transition-all duration-300 transform hover:-translate-y-1 text-lg">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-                Guarda demo
-            </a>
+        <!-- Desktop menu -->
+        <nav class="hidden md:flex space-x-8 font-medium text-gray-700">
+          <a href="#hero" class="hover:text-indigo-600 transition">Home</a>
+          <a href="#servizi" class="hover:text-indigo-600 transition">Servizi</a>
+          <a href="#funziona" class="hover:text-indigo-600 transition">Come funziona</a>
+          <a href="#numeri" class="hover:text-indigo-600 transition">Impatto</a>
+          <a href="#testimonianze" class="hover:text-indigo-600 transition">Testimonianze</a>
+          <a href="#contatto" class="hover:text-indigo-600 transition">Contatti</a>
+        </nav>
+        <!-- Bottone CTA desktop -->
+        <div class="hidden md:block">
+          <a href="#" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2 rounded-full transition shadow-md shadow-indigo-200">Inizia ora →</a>
         </div>
-        
-        <!-- STATISTICHE SEMPLICI -->
-        <div class="flex flex-wrap items-center justify-center gap-8 md:gap-16 mb-16">
-            <div class="text-center">
-                <span class="block text-3xl md:text-4xl font-bold text-emerald-700">+5.000</span>
-                <span class="text-sm md:text-base text-slate-500 uppercase tracking-wide">clienti attivi</span>
-            </div>
-            <div class="w-px h-8 bg-slate-300 hidden md:block"></div>
-            <div class="text-center">
-                <span class="block text-3xl md:text-4xl font-bold text-emerald-700">1M+</span>
-                <span class="text-sm md:text-base text-slate-500 uppercase tracking-wide">messaggi / mese</span>
-            </div>
-            <div class="w-px h-8 bg-slate-300 hidden md:block"></div>
-            <div class="text-center">
-                <span class="block text-3xl md:text-4xl font-bold text-emerald-700">99.9%</span>
-                <span class="text-sm md:text-base text-slate-500 uppercase tracking-wide">affidabilità</span>
-            </div>
-        </div>
-        
-        <!-- FEATURE CARD (3) RESPONSIVE E CENTRATE -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <div class="bg-white rounded-3xl p-8 shadow-sm border border-slate-200/80 hover:shadow-md transition-all duration-300">
-                <div class="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-5 text-emerald-700">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                    </svg>
-                </div>
-                <h3 class="text-xl font-semibold text-slate-800 mb-2">Risposte rapide</h3>
-                <p class="text-slate-500">Modelli predefiniti per rispondere ai clienti in un attimo.</p>
-            </div>
-            
-            <div class="bg-white rounded-3xl p-8 shadow-sm border border-slate-200/80 hover:shadow-md transition-all duration-300">
-                <div class="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-5 text-emerald-700">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                </div>
-                <h3 class="text-xl font-semibold text-slate-800 mb-2">Messaggi programmati</h3>
-                <p class="text-slate-500">Invia comunicazioni automatiche all'orario perfetto.</p>
-            </div>
-            
-            <div class="bg-white rounded-3xl p-8 shadow-sm border border-slate-200/80 hover:shadow-md transition-all duration-300">
-                <div class="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-5 text-emerald-700">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                    </svg>
-                </div>
-                <h3 class="text-xl font-semibold text-slate-800 mb-2">Sicuro e privato</h3>
-                <p class="text-slate-500">Crittografia end‑to‑end per ogni conversazione.</p>
-            </div>
-        </div>
-        
-        <!-- FOOTER MINIMO -->
-        <p class="text-sm text-slate-400 mt-20">
-            WhatsApp CRM — Il tuo messaggio, la nostra priorità.
-        </p>
+        <!-- Mobile hamburger -->
+        <button id="menuBtn" class="block md:hidden text-gray-800 text-2xl focus:outline-none">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
     </div>
+    <!-- Mobile Menu (full-width overlay) -->
+    <div id="mobileMenu" class="mobile-menu fixed top-0 right-0 w-full h-screen bg-white/95 backdrop-blur-xl z-40 flex flex-col items-center justify-center gap-8 text-xl font-semibold shadow-2xl md:hidden">
+      <button id="closeMenuBtn" class="absolute top-6 right-6 text-3xl text-gray-700"><i class="fas fa-times"></i></button>
+      <a href="#hero" class="hover:text-indigo-600 transition">Home</a>
+      <a href="#servizi" class="hover:text-indigo-600 transition">Servizi</a>
+      <a href="#funziona" class="hover:text-indigo-600 transition">Come funziona</a>
+      <a href="#numeri" class="hover:text-indigo-600 transition">Impatto</a>
+      <a href="#testimonianze" class="hover:text-indigo-600 transition">Testimonianze</a>
+      <a href="#contatto" class="hover:text-indigo-600 transition">Contatti</a>
+      <a href="#" class="bg-indigo-600 text-white px-8 py-3 rounded-full w-48 text-center shadow-lg">Inizia ora</a>
+    </div>
+  </header>
 
+  <main class="pt-20"> <!-- offset per navbar fissa -->
+
+    <!-- SEZIONE 1: HERO con parallax (background fisso) -->
+    <section id="hero" class="relative parallax-bg" style="background-image: linear-gradient(117deg, rgba(2,0,36,0.82) 0%, rgba(15,25,55,0.85) 100%), url('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'); background-attachment: fixed;">
+      <div class="max-w-7xl mx-auto px-5 py-24 md:py-32 text-white">
+        <div class="md:w-2/3 space-y-6">
+          <span class="inline-block bg-indigo-500/20 backdrop-blur-sm px-4 py-1 rounded-full text-sm font-medium tracking-wide">✨ Piattaforma n°1 in Italia</span>
+          <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">Il tuo alleato che <span class="text-cyan-300">semplifica la burocrazia</span></h1>
+          <p class="text-lg md:text-xl text-gray-200 max-w-2xl">Troviamo bonus che non sapevi di poter avere, ottimizziamo le tasse, gestiamo le pratiche difficili. Tu vivi, noi facciamo il resto.</p>
+          <div class="flex flex-wrap gap-4 pt-4">
+            <a href="#" class="bg-white text-indigo-800 font-bold px-7 py-3 rounded-full shadow-xl hover:shadow-2xl transition hover:scale-105">Scopri i tuoi bonus →</a>
+            <a href="#" class="border border-white/40 hover:bg-white/10 px-7 py-3 rounded-full transition">Guarda il video <i class="fa-regular fa-circle-play ml-1"></i></a>
+          </div>
+          <div class="flex flex-wrap gap-5 text-sm text-gray-200 pt-6">
+            <span><i class="fa-regular fa-clock mr-1"></i> Nessuna coda</span>
+            <span><i class="fa-regular fa-circle-check mr-1"></i> Assistenza continua</span>
+            <span><i class="fa-solid fa-shield mr-1"></i> Professionisti qualificati</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEZIONE 2: SERVIZI CHIAVE (card con effetto hover, grid responsiva) -->
+    <section id="servizi" class="py-20 px-5 bg-white">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center max-w-2xl mx-auto mb-14">
+          <span class="text-indigo-600 font-semibold uppercase tracking-wide">Cosa offriamo</span>
+          <h2 class="text-3xl md:text-4xl font-bold mt-2 text-gray-800">Oltre 600 bonus e agevolazioni, <span class="text-indigo-600">tutti in un click</span></h2>
+          <p class="text-gray-500 mt-4">Bonus casa, istruzione, trasporti, lavoro, famiglia: scopri subito ciò che ti spetta.</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
+          <div class="bg-gray-50 rounded-2xl p-6 card-hover border border-gray-100 shadow-sm">
+            <div class="h-12 w-12 rounded-xl bg-indigo-100 flex items-center justify-center mb-5"><i class="fas fa-file-invoice-dollar text-2xl text-indigo-700"></i></div>
+            <h3 class="text-xl font-bold text-gray-800">ISEE & Dichiarazione</h3>
+            <p class="text-gray-500 mt-2">Calcolo ISEE in 24 ore, Modello 730 precompilato e detrazioni massimizzate senza errori.</p>
+            <a href="#" class="inline-flex items-center mt-4 text-indigo-600 font-medium">Richiedi ora <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
+          </div>
+          <div class="bg-gray-50 rounded-2xl p-6 card-hover border border-gray-100 shadow-sm">
+            <div class="h-12 w-12 rounded-xl bg-emerald-100 flex items-center justify-center mb-5"><i class="fas fa-briefcase text-2xl text-emerald-700"></i></div>
+            <h3 class="text-xl font-bold text-gray-800">NASpI / Disoccupazione</h3>
+            <p class="text-gray-500 mt-2">Ottenere la disoccupazione rapidamente, supporto completo per la domanda INPS.</p>
+            <a href="#" class="inline-flex items-center mt-4 text-indigo-600 font-medium">Scopri di più <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
+          </div>
+          <div class="bg-gray-50 rounded-2xl p-6 card-hover border border-gray-100 shadow-sm">
+            <div class="h-12 w-12 rounded-xl bg-amber-100 flex items-center justify-center mb-5"><i class="fas fa-baby-carriage text-2xl text-amber-700"></i></div>
+            <h3 class="text-xl font-bold text-gray-800">Assegno Unico & Famiglia</h3>
+            <p class="text-gray-500 mt-2">Gestiamo la domanda per ottenere il massimo importo mensile e bonus natalità.</p>
+            <a href="#" class="inline-flex items-center mt-4 text-indigo-600 font-medium">Attiva ora <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
+          </div>
+          <div class="bg-gray-50 rounded-2xl p-6 card-hover border border-gray-100 shadow-sm">
+            <div class="h-12 w-12 rounded-xl bg-sky-100 flex items-center justify-center mb-5"><i class="fas fa-home text-2xl text-sky-700"></i></div>
+            <h3 class="text-xl font-bold text-gray-800">Bonus Casa & Ristrutturazioni</h3>
+            <p class="text-gray-500 mt-2">Ecobonus, bonus ristrutturazioni e Superbonus: verifica la tua idoneità.</p>
+            <a href="#" class="inline-flex items-center mt-4 text-indigo-600 font-medium">Richiedi consulenza <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
+          </div>
+          <div class="bg-gray-50 rounded-2xl p-6 card-hover border border-gray-100 shadow-sm">
+            <div class="h-12 w-12 rounded-xl bg-rose-100 flex items-center justify-center mb-5"><i class="fas fa-graduation-cap text-2xl text-rose-700"></i></div>
+            <h3 class="text-xl font-bold text-gray-800">Borse di studio & Università</h3>
+            <p class="text-gray-500 mt-2">Opportunità regionali e nazionali per diritto allo studio, tasse agevolate.</p>
+            <a href="#" class="inline-flex items-center mt-4 text-indigo-600 font-medium">Cerca borse <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
+          </div>
+          <div class="bg-gray-50 rounded-2xl p-6 card-hover border border-gray-100 shadow-sm">
+            <div class="h-12 w-12 rounded-xl bg-purple-100 flex items-center justify-center mb-5"><i class="fas fa-chalkboard-user text-2xl text-purple-700"></i></div>
+            <h3 class="text-xl font-bold text-gray-800">Consulenza Premium</h3>
+            <p class="text-gray-500 mt-2">Supporto telefonico con commercialisti e caf per casi complessi personalizzati.</p>
+            <a href="#" class="inline-flex items-center mt-4 text-indigo-600 font-medium">Prenota ora <i class="fas fa-arrow-right ml-1 text-sm"></i></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEZIONE 3: COME FUNZIONA (split layout + parallax subtly) -->
+    <section id="funziona" class="py-20 px-5 bg-gradient-to-br from-indigo-50 via-white to-sky-50">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-800">📲 Come funziona BonusX</h2>
+          <p class="text-gray-500 max-w-2xl mx-auto mt-3">Semplice, veloce e senza burocrazia. Tre passaggi e ottieni i bonus che ti spettano.</p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="bg-white rounded-2xl p-7 shadow-md text-center card-hover">
+            <div class="bg-indigo-100 w-14 h-14 rounded-full flex items-center justify-center mx-auto text-2xl font-black text-indigo-700">1</div>
+            <h3 class="text-xl font-semibold mt-5">Crea il tuo profilo</h3>
+            <p class="text-gray-500 mt-2">Rispondi a poche semplici domande, niente moduli complessi. In meno di 5 minuti.</p>
+          </div>
+          <div class="bg-white rounded-2xl p-7 shadow-md text-center card-hover">
+            <div class="bg-indigo-100 w-14 h-14 rounded-full flex items-center justify-center mx-auto text-2xl font-black text-indigo-700">2</div>
+            <h3 class="text-xl font-semibold mt-5">Scopri i bonus su misura</h3>
+            <p class="text-gray-500 mt-2">L'algoritmo intelligente analizza oltre 600 agevolazioni e ti suggerisce quelle attive per te.</p>
+          </div>
+          <div class="bg-white rounded-2xl p-7 shadow-md text-center card-hover">
+            <div class="bg-indigo-100 w-14 h-14 rounded-full flex items-center justify-center mx-auto text-2xl font-black text-indigo-700">3</div>
+            <h3 class="text-xl font-semibold mt-5">Richiedi e ottieni</h3>
+            <p class="text-gray-500 mt-2">Noi gestiamo la pratica con professionisti, tu ricevi i fondi senza stress.</p>
+          </div>
+        </div>
+        <div class="text-center mt-12">
+          <a href="#" class="inline-block bg-indigo-700 hover:bg-indigo-800 text-white px-8 py-3 rounded-xl font-semibold shadow-lg transition">Inizia subito – è gratuito</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEZIONE 4: NUMERI E IMPATTO (statistiche con parallax bg) -->
+    <section id="numeri" class="parallax-bg py-20 px-5" style="background-image: linear-gradient(135deg, #0b1c3a 0%, #0a1630 100%), url('https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=2069&auto=format'); background-attachment: fixed; background-blend-mode: overlay;">
+      <div class="max-w-7xl mx-auto text-white">
+        <div class="text-center mb-12">
+          <span class="text-cyan-300 uppercase tracking-wider font-semibold">fiducia & risultati</span>
+          <h2 class="text-3xl md:text-4xl font-bold mt-2">BonusX in numeri: l'impatto reale</h2>
+          <p class="text-gray-200 max-w-2xl mx-auto mt-3">Oltre 500.000 italiani hanno già ottenuto ciò che gli spetta.</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+          <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+            <div class="text-4xl md:text-5xl font-black text-cyan-300">570k+</div>
+            <p class="text-lg font-medium mt-2">Utenti assistiti</p>
+            <p class="text-sm text-gray-200">in tutta Italia</p>
+          </div>
+          <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+            <div class="text-4xl md:text-5xl font-black text-cyan-300">€67M+</div>
+            <p class="text-lg font-medium mt-2">Bonus erogati</p>
+            <p class="text-sm text-gray-200">agevolazioni pubbliche</p>
+          </div>
+          <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+            <div class="text-4xl md:text-5xl font-black text-cyan-300">600+</div>
+            <p class="text-lg font-medium mt-2">Servizi disponibili</p>
+            <p class="text-sm text-gray-200">dall'ISEE ai bonus aziendali</p>
+          </div>
+          <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+            <div class="text-4xl md:text-5xl font-black text-cyan-300">98%</div>
+            <p class="text-lg font-medium mt-2">Clienti soddisfatti</p>
+            <p class="text-sm text-gray-200">recensioni positive</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEZIONE 5: TESTIMONIANZE (carousel minimale ma elegante, card doppie responsive) -->
+    <section id="testimonianze" class="py-20 px-5 bg-white">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+          <i class="fas fa-quote-left text-indigo-300 text-4xl"></i>
+          <h2 class="text-3xl md:text-4xl font-bold mt-2 text-gray-800">Cosa dicono di noi</h2>
+          <p class="text-gray-500">Storie vere di chi ha semplificato la propria vita con BonusX</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="bg-gray-50 p-7 rounded-2xl shadow-sm border border-gray-100 relative">
+            <i class="fas fa-star text-yellow-400 text-sm mb-2"></i><i class="fas fa-star text-yellow-400 text-sm"></i><i class="fas fa-star text-yellow-400 text-sm"></i><i class="fas fa-star text-yellow-400 text-sm"></i><i class="fas fa-star text-yellow-400 text-sm"></i>
+            <p class="text-gray-700 mt-3 italic">"Grazie a BonusX ho scoperto l'Assegno Unico e ottenuto il rimborso IRPEF che non sapevo di avere. Professionisti super disponibili!"</p>
+            <div class="flex items-center mt-5 gap-3">
+              <div class="bg-indigo-200 rounded-full w-10 h-10 flex items-center justify-center"><i class="fas fa-user text-indigo-700"></i></div>
+              <div><strong>Martina R.</strong><p class="text-gray-400 text-sm"> — Milano</p></div>
+            </div>
+          </div>
+          <div class="bg-gray-50 p-7 rounded-2xl shadow-sm border border-gray-100 relative">
+            <i class="fas fa-star text-yellow-400 text-sm mb-2"></i><i class="fas fa-star text-yellow-400 text-sm"></i><i class="fas fa-star text-yellow-400 text-sm"></i><i class="fas fa-star text-yellow-400 text-sm"></i><i class="fas fa-star text-yellow-400 text-sm"></i>
+            <p class="text-gray-700 mt-3">"Ho richiesto la NASpI in tempi record, zero file e zero code. Letteralmente cambiato la mia prospettiva."</p>
+            <div class="flex items-center mt-5 gap-3">
+              <div class="bg-indigo-200 rounded-full w-10 h-10 flex items-center justify-center"><i class="fas fa-user-tie text-indigo-700"></i></div>
+              <div><strong>Luca D.</strong><p class="text-gray-400 text-sm"> — Roma</p></div>
+            </div>
+          </div>
+          <div class="bg-gray-50 p-7 rounded-2xl shadow-sm border border-gray-100 relative">
+            <i class="fas fa-star text-yellow-400 text-sm mb-2"></i><i class="fas fa-star text-yellow-400 text-sm"></i><i class="fas fa-star text-yellow-400 text-sm"></i><i class="fas fa-star text-yellow-400 text-sm"></i><i class="fas fa-star text-yellow-400 text-sm"></i>
+            <p class="text-gray-700 mt-3">"Finalmente una piattaforma che ti accompagna passo dopo passo. Mi hanno aiutato con il bonus ristrutturazione e ho risparmiato migliaia di euro!"</p>
+            <div class="flex items-center mt-5 gap-3">
+              <div class="bg-indigo-200 rounded-full w-10 h-10 flex items-center justify-center"><i class="fas fa-hard-hat text-indigo-700"></i></div>
+              <div><strong>Giulia e Marco</strong><p class="text-gray-400 text-sm"> — Napoli</p></div>
+            </div>
+          </div>
+          <div class="bg-gray-50 p-7 rounded-2xl shadow-sm border border-gray-100 relative">
+            <i class="fas fa-star text-yellow-400 text-sm mb-2"></i><i class="fas fa-star text-yellow-400 text-sm"></i><i class="fas fa-star text-yellow-400 text-sm"></i><i class="fas fa-star text-yellow-400 text-sm"></i><i class="fas fa-star text-yellow-400 text-sm"></i>
+            <p class="text-gray-700 mt-3">"Utilissimo per il welfare aziendale, i miei dipendenti hanno scoperto bonus che ignoravano completamente."</p>
+            <div class="flex items-center mt-5 gap-3">
+              <div class="bg-indigo-200 rounded-full w-10 h-10 flex items-center justify-center"><i class="fas fa-building text-indigo-700"></i></div>
+              <div><strong>Alessia, HR manager</strong><p class="text-gray-400 text-sm"> — Torino</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEZIONE 6: CONTATTI / NEWSLETTER (footer e call to action finale) -->
+    <section id="contatto" class="relative bg-indigo-900 text-white py-20 px-5 overflow-hidden">
+      <div class="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070')] bg-cover bg-center"></div>
+      <div class="relative max-w-5xl mx-auto text-center z-10">
+        <h2 class="text-3xl md:text-5xl font-bold">Non perdere nessuna agevolazione</h2>
+        <p class="text-indigo-100 text-lg mt-4 max-w-2xl mx-auto">Iscriviti alla newsletter e ricevi aggiornamenti su nuovi bonus, scadenze e consigli fiscali.</p>
+        <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center max-w-lg mx-auto">
+          <input type="email" placeholder="La tua email" class="px-6 py-3 rounded-full text-gray-800 w-full focus:outline-none">
+          <button class="bg-cyan-400 hover:bg-cyan-500 text-gray-900 font-bold px-7 py-3 rounded-full transition shadow-lg">Iscriviti gratis</button>
+        </div>
+        <div class="mt-12 flex flex-wrap justify-center gap-6 text-sm text-indigo-200">
+          <a href="#" class="hover:text-white transition"><i class="fab fa-facebook-f mr-1"></i> Facebook</a>
+          <a href="#" class="hover:text-white transition"><i class="fab fa-instagram mr-1"></i> Instagram</a>
+          <a href="#" class="hover:text-white transition"><i class="fab fa-linkedin-in mr-1"></i> LinkedIn</a>
+          <a href="#" class="hover:text-white transition">info@bonusx.it</a>
+          <a href="#" class="hover:text-white transition">Privacy & Cookie</a>
+        </div>
+        <div class="mt-8 text-indigo-200 text-xs">© 2025 BonusX · semplifichiamo la burocrazia italiana. P.IVA 11237050965</div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // preloader auto-hide after page load
+    window.addEventListener('load', function() {
+      const preloader = document.getElementById('preloader');
+      if(preloader) {
+        setTimeout(() => {
+          preloader.classList.add('hide-preloader');
+        }, 400);
+      }
+    });
+    // Mobile menu toggles
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const closeMenuBtn = document.getElementById('closeMenuBtn');
+
+    function openMobileMenu() {
+      mobileMenu.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMobileMenu() {
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    if(menuBtn) menuBtn.addEventListener('click', openMobileMenu);
+    if(closeMenuBtn) closeMenuBtn.addEventListener('click', closeMobileMenu);
+    // Chiudi menu mobile cliccando sui link interni
+    const mobileLinks = mobileMenu.querySelectorAll('a');
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', closeMobileMenu);
+    });
+    // Parallax fine-tuning: gestione smooth per il fixed in mobile? già presente nei media query, ma manteniamo consistenza.
+    // Aggiunta classe per migliorare parllax sulle immagini.
+    console.log('Landing BonusX attiva — full responsive, preloader sns');
+  </script>
 </body>
 </html>
