@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>SNS Scopri tutti i bonus con un clic</title>
+  <title>SNS · Scopri tutti i bonus con un clic</title>
   <!-- Tailwind CSS v3 + Font Awesome 6 -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -12,7 +12,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: #fefefe; }
-    /* Preloader fullscreen con testo BonusX */
+    /* Preloader fullscreen con testo SNS */
     #preloader {
       position: fixed;
       top: 0;
@@ -67,21 +67,21 @@
 </head>
 <body class="antialiased">
 
-  <!-- PRELOADER con BONUSX al posto di SNS -->
+  <!-- PRELOADER con SNS -->
   <div id="preloader">
-    <div class="preloader-text">BonusX</div>
+    <div class="preloader-text">SNS</div>
   </div>
 
-  <!-- HEADER + NAVBAR RESPONSIVE -->
+  <!-- HEADER + NAVBAR RESPONSIVE (logo SNS) -->
   <header class="fixed top-0 left-0 w-full bg-white/95 backdrop-blur-md shadow-md z-50 border-b border-gray-200/50">
     <div class="max-w-7xl mx-auto px-5 md:px-8">
       <div class="flex justify-between items-center py-4 md:py-5">
-        <!-- logo / brand (non whatsapp) -->
+        <!-- logo / brand SNS -->
         <div class="flex items-center gap-1" data-no-wa="true">
           <i class="fas fa-shield-alt text-2xl text-indigo-600"></i>
-          <span class="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-700 to-cyan-600 bg-clip-text text-transparent">BonusX</span>
+          <span class="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-700 to-cyan-600 bg-clip-text text-transparent">SNS</span>
         </div>
-        <!-- Desktop menu (con data-no-wa per non aprire whatsapp) -->
+        <!-- Desktop menu -->
         <nav class="hidden md:flex space-x-8 font-medium text-gray-700">
           <a href="#hero" data-no-wa="true" class="hover:text-indigo-600 transition">Home</a>
           <a href="#servizi" data-no-wa="true" class="hover:text-indigo-600 transition">Servizi</a>
@@ -100,7 +100,7 @@
         </button>
       </div>
     </div>
-    <!-- Mobile Menu overlay (solo voci di navigazione hanno data-no-wa, il grosso pulsante Inizia invece è whatsapp) -->
+    <!-- Mobile Menu overlay -->
     <div id="mobileMenu" class="mobile-menu fixed top-0 right-0 w-full h-screen bg-white/95 backdrop-blur-xl z-40 flex flex-col items-center justify-center gap-8 text-xl font-semibold shadow-2xl md:hidden">
       <button id="closeMenuBtn" class="absolute top-6 right-6 text-3xl text-gray-700" data-no-wa="true"><i class="fas fa-times"></i></button>
       <a href="#hero" data-no-wa="true" class="hover:text-indigo-600 transition">Home</a>
@@ -109,7 +109,6 @@
       <a href="#numeri" data-no-wa="true" class="hover:text-indigo-600 transition">Impatto</a>
       <a href="#testimonianze" data-no-wa="true" class="hover:text-indigo-600 transition">Testimonianze</a>
       <a href="#contatto" data-no-wa="true" class="hover:text-indigo-600 transition">Contatti</a>
-      <!-- Questo pulsante INVIA a WhatsApp -->
       <a href="#" class="bg-indigo-600 text-white px-8 py-3 rounded-full w-48 text-center shadow-lg whatsapp-btn">Inizia ora</a>
     </div>
   </header>
@@ -136,7 +135,7 @@
       </div>
     </section>
 
-    <!-- SEZIONE 2: SERVIZI (tutti i link/btn vanno su WhatsApp) -->
+    <!-- SEZIONE 2: SERVIZI -->
     <section id="servizi" class="py-20 px-5 bg-white">
       <div class="max-w-7xl mx-auto">
         <div class="text-center max-w-2xl mx-auto mb-14">
@@ -185,11 +184,11 @@
       </div>
     </section>
 
-    <!-- SEZIONE 3: COME FUNZIONA -->
+    <!-- SEZIONE 3: COME FUNZIONA (titolo SNS) -->
     <section id="funziona" class="py-20 px-5 bg-gradient-to-br from-indigo-50 via-white to-sky-50">
       <div class="max-w-7xl mx-auto">
         <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold text-gray-800">📲 Come funziona BonusX</h2>
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-800">📲 Come funziona SNS</h2>
           <p class="text-gray-500 max-w-2xl mx-auto mt-3">Semplice, veloce e senza burocrazia. Tre passaggi e ottieni i bonus che ti spettano.</p>
         </div>
         <div class="grid md:grid-cols-3 gap-8">
@@ -215,12 +214,12 @@
       </div>
     </section>
 
-    <!-- SEZIONE 4: NUMERI E IMPATTO (parallax) -->
+    <!-- SEZIONE 4: NUMERI E IMPATTO (SNS in numeri) -->
     <section id="numeri" class="parallax-bg py-20 px-5" style="background-image: linear-gradient(135deg, #0b1c3a 0%, #0a1630 100%), url('https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=2069&auto=format'); background-attachment: fixed; background-blend-mode: overlay;">
       <div class="max-w-7xl mx-auto text-white">
         <div class="text-center mb-12">
           <span class="text-cyan-300 uppercase tracking-wider font-semibold">fiducia & risultati</span>
-          <h2 class="text-3xl md:text-4xl font-bold mt-2">BonusX in numeri: l'impatto reale</h2>
+          <h2 class="text-3xl md:text-4xl font-bold mt-2">SNS in numeri: l'impatto reale</h2>
           <p class="text-gray-200 max-w-2xl mx-auto mt-3">Oltre 500.000 italiani hanno già ottenuto ciò che gli spetta.</p>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
@@ -248,18 +247,18 @@
       </div>
     </section>
 
-    <!-- SEZIONE 5: TESTIMONIANZE -->
+    <!-- SEZIONE 5: TESTIMONIANZE (con SNS al posto di BonusX) -->
     <section id="testimonianze" class="py-20 px-5 bg-white">
       <div class="max-w-7xl mx-auto">
         <div class="text-center mb-12">
           <i class="fas fa-quote-left text-indigo-300 text-4xl"></i>
           <h2 class="text-3xl md:text-4xl font-bold mt-2 text-gray-800">Cosa dicono di noi</h2>
-          <p class="text-gray-500">Storie vere di chi ha semplificato la propria vita con BonusX</p>
+          <p class="text-gray-500">Storie vere di chi ha semplificato la propria vita con SNS</p>
         </div>
         <div class="grid md:grid-cols-2 gap-8">
           <div class="bg-gray-50 p-7 rounded-2xl shadow-sm border border-gray-100 relative">
             <i class="fas fa-star text-yellow-400 text-sm mb-2"></i><i class="fas fa-star text-yellow-400 text-sm"></i><i class="fas fa-star text-yellow-400 text-sm"></i><i class="fas fa-star text-yellow-400 text-sm"></i><i class="fas fa-star text-yellow-400 text-sm"></i>
-            <p class="text-gray-700 mt-3 italic">"Grazie a BonusX ho scoperto l'Assegno Unico e ottenuto il rimborso IRPEF che non sapevo di avere. Professionisti super disponibili!"</p>
+            <p class="text-gray-700 mt-3 italic">"Grazie a SNS ho scoperto l'Assegno Unico e ottenuto il rimborso IRPEF che non sapevo di avere. Professionisti super disponibili!"</p>
             <div class="flex items-center mt-5 gap-3">
               <div class="bg-indigo-200 rounded-full w-10 h-10 flex items-center justify-center"><i class="fas fa-user text-indigo-700"></i></div>
               <div><strong>Martina R.</strong><p class="text-gray-400 text-sm"> — Milano</p></div>
@@ -293,7 +292,7 @@
       </div>
     </section>
 
-    <!-- SEZIONE 6: CONTATTI / NEWSLETTER (il bottone iscriviti porta su WhatsApp) -->
+    <!-- SEZIONE 6: CONTATTI / NEWSLETTER (footer con SNS) -->
     <section id="contatto" class="relative bg-indigo-900 text-white py-20 px-5 overflow-hidden">
       <div class="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070')] bg-cover bg-center"></div>
       <div class="relative max-w-5xl mx-auto text-center z-10">
@@ -307,10 +306,10 @@
           <a href="#" data-no-wa="true" class="hover:text-white transition"><i class="fab fa-facebook-f mr-1"></i> Facebook</a>
           <a href="#" data-no-wa="true" class="hover:text-white transition"><i class="fab fa-instagram mr-1"></i> Instagram</a>
           <a href="#" data-no-wa="true" class="hover:text-white transition"><i class="fab fa-linkedin-in mr-1"></i> LinkedIn</a>
-          <a href="#" data-no-wa="true" class="hover:text-white transition">info@bonusx.it</a>
+          <a href="#" data-no-wa="true" class="hover:text-white transition">info@sns.it</a>
           <a href="#" data-no-wa="true" class="hover:text-white transition">Privacy & Cookie</a>
         </div>
-        <div class="mt-8 text-indigo-200 text-xs">© 2025 BonusX · semplifichiamo la burocrazia italiana. P.IVA 11237050965</div>
+        <div class="mt-8 text-indigo-200 text-xs">© 2025 SNS · semplifichiamo la burocrazia italiana. P.IVA 11237050965</div>
       </div>
     </section>
 
@@ -336,49 +335,26 @@
       if(closeMenuBtn) closeMenuBtn.addEventListener('click', closeMobileMenu);
       const mobileLinks = mobileMenu ? mobileMenu.querySelectorAll('a:not([data-no-wa])') : [];
       mobileLinks.forEach(link => link.addEventListener('click', closeMobileMenu));
-      const allNavLinks = document.querySelectorAll('[data-no-wa="true"]');
-      allNavLinks.forEach(link => link.addEventListener('click', (e) => { /* allow normal scroll */ }));
-
-      // WHATSAPP INTEGRATION: numero +39 353 204 4997
+      
+      // WHATSAPP INTEGRATION: numero +39 353 204 4997 con messaggio personalizzato SNS
       const WHATSAPP_NUMBER = "393532044997";
-      const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=Ciao%20BonusX%2C%20vorrei%20ricevere%20maggiori%20informazioni%20sui%20bonus%20disponibili.`;
+      const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=Ciao%20SNS%2C%20vorrei%20ricevere%20maggiori%20informazioni%20sui%20bonus%20disponibili.`;
 
-      function openWhatsApp(event, targetElement) {
-        // Se l'elemento o un suo genitore ha data-no-wa, non fare nulla
-        let el = targetElement;
-        while(el && el !== document.body) {
-          if(el.hasAttribute && el.hasAttribute('data-no-wa')) return false;
-          el = el.parentElement;
-        }
-        event.preventDefault();
-        window.open(WHATSAPP_URL, '_blank');
-        return false;
-      }
-
-      // Gestione globale: tutti i link e bottoni che hanno classe 'whatsapp-btn' oppure qualsiasi pulsante/ancora senza data-no-wa
+      // Gestione click globale: solo elementi senza data-no-wa e non link di navigazione interna pura (con # e senza classe whatsapp)
       document.body.addEventListener('click', function(e) {
         let target = e.target.closest('a, button');
         if(!target) return;
-        // Se ha data-no-wa direttamente o ereditato -> skip
         let checkNoWA = target.closest('[data-no-wa]');
         if(checkNoWA) return;
-        // Se è un bottone o un link (anche senza classe) lo blocchiamo e mandiamo su WA
-        // Ma evitiamo di intercettare link di navigazione interna che hanno href="#..." senza classe whatsapp? 
-        // In ogni caso, se è un link che inizia con # ma non ha classe whatsapp-btn potrebbe essere menu (ma hanno già data-no-wa)
-        // Per sicurezza escludiamo solo se href inizia con # e non ha la classe whatsapp-btn (per evitare conflitti con ancora scroll residue)
-        // Nel nostro codice tutti i link che devono rimanere per scroll hanno data-no-wa, quindi questa condizione ulteriore è ridondante ma utile.
+        // Se è un ancora di navigazione interna (href="#xxx") ma non ha classe whatsapp-btn, lo evitiamo
         if(target.tagName === 'A' && target.getAttribute('href') && target.getAttribute('href').startsWith('#') && !target.classList.contains('whatsapp-btn')) {
-          // Se è ancora di navigazione senza data-no-wa (non dovrebbe accadere) non interferiamo
           return;
         }
-        // per i bottoni o link CTA, inviamo a WhatsApp
         e.preventDefault();
         window.open(WHATSAPP_URL, '_blank');
       });
       
-      // Assicuriamoci che anche i bottoni dinamici o gli elementi con classe .whatsapp-btn vengano catturati dall'evento sopra,
-      // ma aggiungiamo anche un piccolo fix per elementi che potrebbero avere href definito e prevenire doppio open.
-      console.log("BonusX landing pronta — tutti i pulsanti reindirizzano a WhatsApp +393532044997");
+      console.log("SNS landing pronta — tutti i pulsanti reindirizzano a WhatsApp +393532044997");
     })();
   </script>
 </body>
