@@ -187,62 +187,96 @@
         </div>
     </div>
 
-    <script>
-        function showToast(message, type = 'info') {
-            const container = document.getElementById('toast-container');
-            if (!container) return;
-            const bgColor = {success:'bg-green-600',error:'bg-red-600'}[type]||'bg-blue-600';
-            const toast = document.createElement('div');
-            toast.className = `flex items-center gap-2 px-4 py-3 rounded-lg text-white shadow-lg text-sm font-medium ${bgColor} transition-all duration-300`;
-            toast.innerHTML = `<span>${message}</span><button class="ml-2 font-bold text-lg leading-none" onclick="this.parentElement.remove()">&times;</button>`;
-            container.appendChild(toast);
-            setTimeout(() => {if(toast.parentNode) toast.remove();},4000);
-        }
+   
+     <script>
+    // ========== TOAST ==========
+    function showToast(message, type = 'info') {
+        const container = document.getElementById('toast-container');
+        if (!container) return;
+        const bgColor = { success: 'bg-green-600', error: 'bg-red-600', warning: 'bg-orange-500', info: 'bg-blue-600' }[type] || 'bg-blue-600';
+        const toast = document.createElement('div');
+        toast.className = `flex items-center gap-2 px-4 py-3 rounded-lg text-white shadow-lg text-sm font-medium ${bgColor} transition-all duration-300`;
+        toast.innerHTML = `<span>${message}</span><button class="ml-2 font-bold text-lg leading-none" onclick="this.parentElement.remove()">&times;</button>`;
+        container.appendChild(toast);
+        setTimeout(() => { if (toast.parentNode) toast.remove(); }, 4000);
+    }
 
-        async function submitForm(formId) {
-            const form = document.getElementById(formId);
-            const formData = new FormData(form);
-            const payload = {};
-            formData.forEach((v,k) => payload[k]=v);
-
-            try {
-                const res = await fetch('/settings', {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content'),
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(payload)
-                });
-                const data = await res.json();
-                if (res.ok) {
-                    showToast(data.message||'Aggiornato!','success');
-                    setTimeout(()=>location.reload(),1000);
-                } else {
-                    showToast(data.message||'Errore','error');
-                }
-            } catch(e) {
-                console.error(e);
-                showToast('Errore di rete','error');
+    // ========== DELETE SETTING ==========
+    async function deleteSetting(key) {
+        if (!confirm(`Eliminare "${key}"?`)) return;
+        try {
+            const res = await fetch(`/settings/${key}`, {
+                method: 'DELETE',
+                headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content') }
+            });
+            if (res.ok) {
+                showToast('Eliminato!', 'success');
+                setTimeout(() => location.reload(), 800);
             }
-        }
+        } catch (e) { console.error(e); }
+    }
 
-        document.getElementById('twilioForm').addEventListener('submit',e=>{e.preventDefault();submitForm('twilioForm');});
-        document.getElementById('mailForm').addEventListener('submit',e=>{e.preventDefault();submitForm('mailForm');});
+    // ========== TWILIO FORM ==========
+    document.getElementById('twilioForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const formData = new FormData(form);
+        const payload = {};
+        formData.forEach((v, k) => payload[k] = v);
 
-        async function deleteSetting(key) {
-            if(!confirm(`Eliminare "${key}"?`)) return;
-            try {
-                const res = await fetch(`/settings/${key}`, {
-                    method: 'DELETE',
-                    headers: {'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content')}
-                });
-                if(res.ok) {
-                    showToast('Eliminato!','success');
-                    setTimeout(()=>location.reload(),800);
-                }
-            } catch(e) {console.error(e);}
+        try {
+            const res = await fetch('/settings', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content'),
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (res.ok) {
+                showToast(data.message || 'Twilio aggiornato!', 'success');
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                showToast(data.message || 'Errore', 'error');
+            }
+        } catch (e) {
+            console.error(e);
+            showToast('Errore di rete', 'error');
         }
-    </script>
+    });
+
+    // ========== MAIL FORM ==========
+    document.getElementById('mailForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const formData = new FormData(form);
+        const payload = {};
+        formData.forEach((v, k) => payload[k] = v);
+
+        try {
+            const res = await fetch('/settings', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content'),
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (res.ok) {
+                showToast(data.message || 'Email aggiornata!', 'success');
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                showToast(data.message || 'Errore', 'error');
+            }
+        } catch (e) {
+            console.error(e);
+            showToast('Errore di rete', 'error');
+        }
+    });
+</script>
+
 </x-app-layout>

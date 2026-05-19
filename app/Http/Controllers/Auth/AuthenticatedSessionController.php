@@ -28,7 +28,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        // ব্লক চেক (এখন ইউজার লগইন করা)
+        // check user 
         if (Auth::user()->is_blocked) {
             Auth::guard('web')->logout();
 
